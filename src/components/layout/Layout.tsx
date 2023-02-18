@@ -1,28 +1,29 @@
-import { Menu } from "antd"
-import { Header } from "antd/es/layout/layout"
-import { FC, ReactNode } from "react"
-import styles from './Layout.module.css'
+import { FC, ReactNode } from 'react';
+import styles from './Layout.module.css';
+import logo from '../../assets/logo.png';
+import beaver from '../../assets/beaver.png';
 
 interface Props {
-  children: ReactNode 
+  children: ReactNode;
 }
 
-export const Layout: FC<Props> = ({children}) => {
-    return (
-        <>
-        <div className={styles.container}>
-            <img className={styles.logo} src="./src/components/layout/assets/logo.png" alt="logo" />
-            <div>
-                <a>Отчёт</a>
-                <a>Внести изменения</a>
-            </div>
-            <div className={styles.user}>
-                <p>Крутой Бобёр</p>
-                <div><img className={styles.avatar} src="./src/components/layout/assets/beaver.png" alt="beaver" /></div>
-            </div>
+export const Layout: FC<Props> = ({ children }) => {
+  return (
+    <>
+      <div className={styles.container}>
+        <img className={styles.logo} src={logo} alt='logo' />
+        <div>
+          <a>Отчёт</a>
+          <a>Внести изменения</a>
         </div>
-        {children}
-        </>
-    )
-}
-
+        <div className={styles.user}>
+          <p>Крутой Бобёр</p>
+          <div>
+            <img className={styles.avatar} src={beaver} alt='beaver' />
+          </div>
+        </div>
+      </div>
+      {children}
+    </>
+  );
+};

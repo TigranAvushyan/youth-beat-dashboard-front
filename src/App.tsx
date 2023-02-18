@@ -6,12 +6,12 @@ import { Body } from './components/Body/Body';
 function App() {
   return (
     <ConfigProvider
-    theme={{
-      token: {
-        colorPrimary: '#8C64D8',
-        colorText: '#252525',
-      },
-    }}
+      theme={{
+        token: {
+          colorPrimary: '#8C64D8',
+          colorText: '#252525',
+        },
+      }}
     >
       <Layout>
         <Body />
