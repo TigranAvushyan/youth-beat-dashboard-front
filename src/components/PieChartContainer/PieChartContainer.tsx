@@ -3,7 +3,7 @@ import { useStore } from 'effector-react';
 import { dashboard } from '../../store/dataStore';
 import { Chart, EChartsOption } from '../chart/Chart';
 import styles from './PieChartContainer.module.css';
-import { time } from 'echarts';
+
 export const PieChartContainer: FC = () => {
   const pieChart = useStore(dashboard.pieChart.$chart);
 
@@ -49,6 +49,8 @@ export const PieChartContainer: FC = () => {
       ],
     };
   }, [pieChart]);
+
+  if (!pieChart.length) return null;
 
   return (
     <div className={styles.container}>
