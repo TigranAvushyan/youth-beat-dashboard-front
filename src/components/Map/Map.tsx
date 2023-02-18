@@ -48,5 +48,5 @@ export const Map: FC = () => {
     }
   }, [map, regions]);
 
-  return <div ref={mapRef} style={{ height: 600 }} />;
+  return <div ref={mapRef} style={{ height: 420 }} />;
 };

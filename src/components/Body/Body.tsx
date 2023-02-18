@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import styles from './Body.module.css';
 import { MapContainer } from '../Map/MapContainer';
 import { Chart } from '../chart/Chart';
+import { BarChartContainer } from '../BarChartContainer/BarChartContainer';
 
 export const Body: FC = () => {
   const [array, setArray] = useState([]);
@@ -43,6 +44,8 @@ export const Body: FC = () => {
     <div className={styles.container}>
       <h1 className={styles.header}>Аналитика</h1>
       <MapContainer options={array} filters={filters} />
+      {/* <Chart option={undefined} /> */}
+      <BarChartContainer />
     </div>
   );
 };
