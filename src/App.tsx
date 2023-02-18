@@ -1,7 +1,7 @@
 import './App.css';
 import { ConfigProvider } from 'antd';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { HomePage } from './pages/home /HomePage';
+import { HomePage } from './pages/home/HomePage';
 
 const router = createBrowserRouter([
   {
