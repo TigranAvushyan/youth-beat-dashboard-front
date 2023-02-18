@@ -51,5 +51,5 @@ export const Map: FC = () => {
     }
   }, [map, regions]);
 
-  return <div ref={mapRef} className={styles.map} />;
+  return <div ref={mapRef} style={{ height: 420 }} />;
 };

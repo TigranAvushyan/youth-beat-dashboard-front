@@ -19,7 +19,7 @@ export const Chart: FC<IProps> = ({ option }) => {
 
   return (
     <div>
-      <div ref={chartRef} style={{ height: 500 }}></div>
+      
     </div>
   );
 };
