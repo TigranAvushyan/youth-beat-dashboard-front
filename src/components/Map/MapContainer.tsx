@@ -1,15 +1,61 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { YMaps } from '@pbe/react-yandex-maps';
 import { Map } from './Map';
 import { mapStore } from '../../store/map/mapStore';
+import { DropDown } from '../DropDown/DropDown';
+import styles from './Map.module.css';
 
-export const MapContainer: FC = () => {
+interface IProps {
+  options: { id: string; label: string; value: string }[];
+  filters: { id: string; label: string; value: string }[];
+}
+
+export const MapContainer: FC<IProps> = ({ options, filters }) => {
+  const [values, setValues] = useState({ region: 1, filter: 1 });
+
+  const getRegionStats = async () => {
+    console.log('keke');
+  };
+
+  const getRegion = (id: number) => {
+    setValues((prevValues) => ({ ...prevValues, region: id }));
+    getRegionStats();
+  };
+
   useEffect(() => {
-    mapStore.fetchRegionsFx();
-  }, []);
+    mapStore.fetchRegionsFx(values.filter);
+  }, [values]);
+
+  const getFilters = (id: number) => {
+    setValues((prevValues) => ({ ...prevValues, filter: id }));
+    getRegionStats();
+  };
+
   return (
-    <YMaps query={{ load: 'package.full' }}>
-      <Map />
-    </YMaps>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div className={styles.filter}>
+          {options && (
+            <DropDown
+              options={options}
+              handleChange={getRegion}
+              defaultValue='Регион'
+            />
+          )}
+          {filters && (
+            <DropDown
+              options={filters}
+              handleChange={getFilters}
+              defaultValue='Признаки'
+            />
+          )}
+        </div>
+      </div>
+      <div className={styles.mapContainer}>
+        <YMaps query={{ load: 'package.full' }}>
+          <Map />
+        </YMaps>
+      </div>
+    </div>
   );
 };

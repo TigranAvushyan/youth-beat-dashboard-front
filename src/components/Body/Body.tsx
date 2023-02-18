@@ -1,61 +1,48 @@
-import { FC, useEffect, useMemo, useRef } from 'react';
+import axios from 'axios';
+import { FC, useEffect, useState } from 'react';
 import styles from './Body.module.css';
 import { MapContainer } from '../Map/MapContainer';
-import Button from '../UI/Button/Button';
-import { handleDownloadPdf } from '../../lib/utils/downloadPdf';
 import { Chart } from '../chart/Chart';
-import { useStore } from 'effector-react';
-import { chartStore } from '../../store/chart';
 
 export const Body: FC = () => {
-  const div = useRef(null);
-  const download = () => {
-    handleDownloadPdf(div.current);
+  const [array, setArray] = useState([]);
+  const [filters, setFilters] = useState([]);
+
+  const fetchRegions = async () => {
+    const response = await axios
+      .get('http://78.140.241.174:8100/geography/regions')
+      .then((res) => {
+        const newArray = optionsToValues(res.data);
+        setArray(res.data);
+      });
   };
 
-  useEffect(() => {
-    chartStore.fetchChartFx();
-  }, []);
+  const fetchFilters = async () => {
+    const response = await axios
+      .get('http://78.140.241.174:8100/stats/features')
+      .then((res) => {
+        optionsToValues(res.data);
+        setFilters(res.data);
+      });
+  };
 
-  const chartOpt = useStore(chartStore.$chart);
-  const options = useMemo(() => {
-    return {
-      xAxis: {
-        type: 'category',
-        data: chartOpt.slice(0, 10).map((i, idx) => i.name),
-      },
-      yAxis: {
-        type: 'value',
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
-      series: [
-        {
-          data: chartOpt.slice(0, 10).map((i) => i.value),
-          type: 'bar',
-          showBackground: true,
-          backgroundStyle: {
-            color: 'rgba(180, 180, 180, 0.2)',
-          },
-        },
-      ],
-    };
-  }, [chartOpt]);
+  function optionsToValues(options: any) {
+    for (let i = 0; i < options?.length; i++) {
+      options[i].label = options[i].name;
+      options[i].value = options[i].id;
+      delete options[i].name;
+    }
+  }
+
+  useEffect(() => {
+    fetchRegions();
+    fetchFilters();
+  }, []);
 
   return (
     <div className={styles.container}>
       <h1 className={styles.header}>Аналитика</h1>
-      <Button type={'primary'} onClick={download}>
-        скачать PDF
-      </Button>
-      <div ref={div}>
-        <Chart option={options} />
-        <MapContainer />
-      </div>
+      <MapContainer options={array} filters={filters} />
     </div>
   );
 };
