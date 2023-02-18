@@ -1,12 +1,11 @@
-import { Body } from "../../components/Body/Body";
-import { Layout } from "../../components/layout/Layout";
+import { Layout } from '../../components/layout/Layout';
 import { FC } from 'react';
-import { Analytics } from "../../components/Analytics/Analytics";
+import { Analysis } from '../../components/Analytics/Analysis';
 
 export const AnalyticsPage: FC = () => {
   return (
     <Layout>
-      <Analytics />
+      <Analysis />
     </Layout>
   );
 };

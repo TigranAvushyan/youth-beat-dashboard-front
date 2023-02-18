@@ -10,7 +10,7 @@ import {
 import { http } from '../lib/server/http';
 import { toDropdownOptions } from '../lib/utils/toDropdownOptions';
 import { createChart } from './chart';
-import { IBarChart, IPage, IPieChart } from '../lib/types';
+import { IBarChart, ILineChart, IPage, IPieChart } from '../lib/types';
 
 export const createDashboard = () => {
   const fetchRegionsFx = createEffect(async () => {
@@ -102,6 +102,20 @@ export const createDashboard = () => {
       return res.data.results;
     }
   );
+  const fetchLineChartFx = createEffect(
+    async ({ feature, region }: { feature: number; region: number }) => {
+      const res = await http.get<IPage<IPieChart>>(
+        '/stats/feature-values/yearly',
+        {
+          params: {
+            feature: feature,
+            region,
+          },
+        }
+      );
+      return res.data;
+    }
+  );
 
   const pieChart = createChart<IPieChart>();
 
@@ -115,7 +129,34 @@ export const createDashboard = () => {
       region: source[0] !== null ? source[0] : 1,
       feature: source[1] !== null ? source[1] : 1,
     }),
-    target: fetchPieChartFx,
+    target: [fetchPieChartFx, fetchLineChartFx],
+  });
+
+  const fetchAnalysisFx = createEffect(async (id: number | null) => {
+    const res = await http.get('/analysis/analysis', {
+      params: { region_id: id },
+    });
+    return res.data;
+  });
+
+  const $analysis = createStore<
+    {
+      text: string;
+      plot: { data: any; layout: any };
+      status: 'bad' | 'good' | 'ok';
+    }[]
+  >([]).on(fetchAnalysisFx.doneData, (_, payload) => payload);
+
+  forward({
+    from: regionStore.$selectedFilter,
+    to: fetchAnalysisFx,
+  });
+
+  const lineChart = createChart<ILineChart>();
+
+  forward({
+    from: fetchLineChartFx.doneData,
+    to: lineChart.setChartOptions,
   });
 
   return {
@@ -130,6 +171,12 @@ export const createDashboard = () => {
     fetchBarChartFx,
     setOrder,
     $order,
+
+    $analysis,
+    fetchAnalysisFx,
+
+    lineChart,
+    fetchLineChartFx,
   };
 };
 

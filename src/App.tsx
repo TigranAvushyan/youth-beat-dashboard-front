@@ -3,6 +3,8 @@ import { ConfigProvider } from 'antd';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from './pages/home/HomePage';
 import { AnalyticsPage } from './pages/analytics/AnalyticsPage';
+import { useEffect } from 'react';
+import { dashboard } from './store/dataStore';
 
 const router = createBrowserRouter([
   {
@@ -11,11 +13,16 @@ const router = createBrowserRouter([
   },
   {
     path: '/analytics',
-    element: <AnalyticsPage />
-  }
+    element: <AnalyticsPage />,
+  },
 ]);
 
 function App() {
+  useEffect(() => {
+    dashboard.fetchFeatureFx();
+    dashboard.fetchRegionsFx();
+  }, [dashboard.fetchFeatureFx, dashboard.fetchRegionsFx]);
+
   return (
     <ConfigProvider
       theme={{

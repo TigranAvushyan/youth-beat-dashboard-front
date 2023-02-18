@@ -12,11 +12,6 @@ export const MapContainer: FC = () => {
   const feature = useStore(dashboard.featureStore.$selectedFilter);
   const region = useStore(dashboard.regionStore.$selectedFilter);
 
-  useEffect(() => {
-    dashboard.fetchFeatureFx();
-    dashboard.fetchRegionsFx();
-  }, [dashboard.fetchFeatureFx, dashboard.fetchRegionsFx]);
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>

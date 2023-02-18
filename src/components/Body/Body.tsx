@@ -3,6 +3,7 @@ import styles from './Body.module.css';
 import { MapContainer } from '../Map/MapContainer';
 import { BarChartContainer } from '../BarChartContainer/BarChartContainer';
 import { PieChartContainer } from '../PieChartContainer/PieChartContainer';
+import { LineChartContainer } from '../LineChartContainer/LineChartContainer';
 
 export const Body: FC = () => {
   return (
@@ -11,6 +12,7 @@ export const Body: FC = () => {
       <MapContainer />
       <BarChartContainer />
       <PieChartContainer />
+      <LineChartContainer />
     </div>
   );
 };
