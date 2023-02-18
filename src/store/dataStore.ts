@@ -3,7 +3,7 @@ import { createFilter } from './filter/createFilter';
 import { createEffect, forward, sample } from 'effector';
 import { http } from '../lib/server/http';
 import { toDropdownOptions } from '../lib/utils/toDropdownOptions';
-import { IDropdownItem } from '../lib/types';
+import { createChart } from './chart';
 
 export const createDashboard = () => {
   const fetchRegionsFx = createEffect(async () => {
@@ -39,10 +39,42 @@ export const createDashboard = () => {
 
   const mapStore = createMap();
 
+  const fetchPieChartFx = createEffect(async (id: number) => {
+    const res = await http.get('/stats/feature-values/children', {
+      params: {
+        feature: id,
+      },
+    });
+    return res.data;
+  });
+
+  const fetchBarChartFx = createEffect(async (id: number) => {
+    const res = await http.get('/stats/feature-values', {
+      params: {
+        feature: id,
+      },
+    });
+    return res.data;
+  });
+
+  const pieChart = createChart();
+
   sample({
     source: featureStore.$selectedFilter,
     fn: (source) => (source !== null ? source : 1),
-    target: mapStore.fetchRegionsFx,
+    target: [mapStore.fetchRegionsFx, fetchPieChartFx, fetchBarChartFx],
+  });
+
+  forward({
+    from: fetchPieChartFx.doneData,
+    to: pieChart.setChartOptions,
+  });
+
+  const barChart = createChart();
+
+  forward({
+    from: fetchBarChartFx.doneData,
+    to: barChart.setChartOptions,
   });
 
   return {
