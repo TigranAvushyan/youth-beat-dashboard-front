@@ -1,17 +1,7 @@
-import { Select } from "antd"
-import { FC } from "react"
+import { Select } from 'antd';
+import { FC } from 'react';
+import { SelectProps } from 'antd/es/select';
 
-interface Props {
-    options: Array<{id: string, label: string, value: string}>
-    handleChange: any
-    defaultValue: string
-}
-
-export const DropDown: FC<Props> = ({options, handleChange, defaultValue}) => {
-
-    return (
-        <>
-            <Select options={options} onChange={(id) => handleChange(id)} defaultValue={defaultValue} /> 
-        </>
-    )
-}
+export const DropDown: FC<SelectProps> = (props) => {
+  return <Select {...props} />;
+};
