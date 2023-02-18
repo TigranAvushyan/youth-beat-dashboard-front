@@ -55,7 +55,7 @@ export const BarChartContainer: FC = () => {
           checked={order}
           onChange={(e) => dashboard.setOrder(e.target.checked)}
         >
-          Выбрать худшие показатели
+          Выбрать регионы с наихудшими показателями
         </Checkbox>
       </div>
       <div className={styles.chart}>

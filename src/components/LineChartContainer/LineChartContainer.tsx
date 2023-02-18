@@ -8,9 +8,6 @@ export const LineChartContainer: FC = () => {
 
   const options = useMemo(() => {
     return {
-      title: {
-        text: 'Stacked Line',
-      },
       tooltip: {
         trigger: 'axis',
       },

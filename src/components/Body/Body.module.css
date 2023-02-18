@@ -1,10 +1,10 @@
 .container {
-  margin: 0 100px;
+  margin: 0 100px 30px;
 }
 
 .header {
   color: #8c64d8;
   font-size: 48px;
   letter-spacing: -0.035em;
-  margin: 50px 0;
+  margin: 20px 0;
 }

@@ -7,9 +7,9 @@ export const handleDownloadPdf = async (element: HTMLElement | null) => {
     const data = canvas.toDataURL('image/png');
 
     const pdf = new jsPDF();
-    const imgProperties = pdf.getImageProperties(data);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    const pdfWidth = pdf.internal.pageSize.getWidth() / 1.4;
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
     pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
     pdf.save('print.pdf');
   }
