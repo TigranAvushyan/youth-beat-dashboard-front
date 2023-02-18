@@ -4,6 +4,7 @@ import { createEffect, forward, sample } from 'effector';
 import { http } from '../lib/server/http';
 import { toDropdownOptions } from '../lib/utils/toDropdownOptions';
 import { createChart } from './chart';
+import { IBarChart, IPage, IPieChart } from '../lib/types';
 
 export const createDashboard = () => {
   const fetchRegionsFx = createEffect(async () => {
@@ -40,24 +41,27 @@ export const createDashboard = () => {
   const mapStore = createMap();
 
   const fetchPieChartFx = createEffect(async (id: number) => {
-    const res = await http.get('/stats/feature-values/children', {
-      params: {
-        feature: id,
-      },
-    });
-    return res.data;
+    const res = await http.get<IPage<IPieChart>>(
+      '/stats/feature-values/children',
+      {
+        params: {
+          feature: id,
+        },
+      }
+    );
+    return res.data.results;
   });
 
   const fetchBarChartFx = createEffect(async (id: number) => {
-    const res = await http.get('/stats/feature-values', {
+    const res = await http.get<IPage<IBarChart>>('/stats/feature-values', {
       params: {
         feature: id,
       },
     });
-    return res.data;
+    return res.data.results;
   });
 
-  const pieChart = createChart();
+  const pieChart = createChart<IPieChart>();
 
   sample({
     source: featureStore.$selectedFilter,
@@ -70,7 +74,7 @@ export const createDashboard = () => {
     to: pieChart.setChartOptions,
   });
 
-  const barChart = createChart();
+  const barChart = createChart<IBarChart>();
 
   forward({
     from: fetchBarChartFx.doneData,
@@ -85,6 +89,8 @@ export const createDashboard = () => {
     fetchFeatureFx,
     pieChart,
     barChart,
+    fetchPieChartFx,
+    fetchBarChartFx,
   };
 };
 
