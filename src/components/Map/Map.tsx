@@ -2,8 +2,6 @@ import { useYMaps } from '@pbe/react-yandex-maps';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useStore } from 'effector-react';
 import { mapStore } from '../../store/map/mapStore';
-import { handleDownloadPdf } from '../../lib/utils/downloadPdf';
-import Button from '../UI/Button/Button';
 
 const getHint = (name: string, value: number) => {
   return `<div  style="font-size: 1.4em; padding: 3px">${name}: <span>${value}</span></div>`;
@@ -36,8 +34,6 @@ export const Map: FC = () => {
         setAllRegions(ymaps.geoQuery(geojson));
       });
   }, [ymaps]);
-  const hintRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (map && allRegions && regions.length) {
       regions.forEach((i) => {
@@ -52,10 +48,5 @@ export const Map: FC = () => {
     }
   }, [map, regions]);
 
-  return (
-    <div>
-      <div ref={hintRef} style={{ display: 'none', position: 'absolute' }} />
-      <div ref={mapRef} style={{ width: 500, height: 500 }} />
-    </div>
-  );
+  return <div ref={mapRef} style={{ height: 600 }} />;
 };

@@ -1,7 +1,14 @@
 import './App.css';
 import { ConfigProvider } from 'antd';
-import { Layout } from './components/layout/Layout';
-import { Body } from './components/Body/Body';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { HomePage } from './pages/home /HomePage';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomePage />,
+  },
+]);
 
 function App() {
   return (
@@ -13,9 +20,7 @@ function App() {
         },
       }}
     >
-      <Layout>
-        <Body />
-      </Layout>
+      <RouterProvider router={router} />
     </ConfigProvider>
   );
 }
