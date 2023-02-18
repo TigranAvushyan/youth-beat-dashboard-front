@@ -2,6 +2,8 @@ import { FC, useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import Button from '../UI/Button/Button';
 import { handleDownloadPdf } from '../../lib/utils/downloadPdf';
+import { chartStore } from '../../store/chart';
+import { useStore } from 'effector-react';
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -11,11 +13,6 @@ interface IProps {
 
 export const Chart: FC<IProps> = ({ option }) => {
   const printRef = useRef<HTMLDivElement>(null);
-  const download = async () => {
-    const element = printRef.current;
-
-    await handleDownloadPdf(element);
-  };
 
   const chartRef = useRef(null);
 
@@ -28,10 +25,7 @@ export const Chart: FC<IProps> = ({ option }) => {
 
   return (
     <div>
-      <Button onClick={download}>download</Button>
-      <div ref={printRef}>
-        <div ref={chartRef} style={{ height: 500 }}></div>
-      </div>
+      <div ref={chartRef} style={{ height: 500 }}></div>
     </div>
   );
 };
