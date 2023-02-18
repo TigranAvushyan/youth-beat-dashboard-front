@@ -10,9 +10,9 @@ export interface IRegionsValue {
 }
 
 export const createMap = () => {
-  const fetchRegionsFx = createEffect(async () => {
+  const fetchRegionsFx = createEffect(async (id: number) => {
     const res = await http.get<IRegionsValue[]>(
-      '/stats/feature-values/map?feature=1'
+      '/stats/feature-values/map?feature=' + id
     );
     return res.data;
   });

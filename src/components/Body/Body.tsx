@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
-import { Map } from '../Map/Map';
 import styles from './Body.module.css';
-import {MapContainer} from "../Map/MapContainer";
+import { MapContainer } from '../Map/MapContainer';
+import { Chart } from '../chart/Chart';
 
 export const Body: FC = () => {
   const [array, setArray] = useState([]);
@@ -21,7 +21,7 @@ export const Body: FC = () => {
     const response = await axios
       .get('http://78.140.241.174:8100/stats/features')
       .then((res) => {
-        const newArray = optionsToValues(res.data);
+        optionsToValues(res.data);
         setFilters(res.data);
       });
   };
