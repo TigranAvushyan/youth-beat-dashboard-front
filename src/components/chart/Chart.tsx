@@ -17,9 +17,5 @@ export const Chart: FC<IProps> = ({ option }) => {
     }
   }, [option]);
 
-  return (
-    <div>
-      
-    </div>
-  );
+  return <div ref={chartRef} style={{ height: '100%' }} />;
 };
