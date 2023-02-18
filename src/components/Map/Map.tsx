@@ -39,7 +39,6 @@ export const Map: FC = () => {
   useEffect(() => {
     if (map && allRegions && regions.length) {
       regions.forEach((i) => {
-        console.log(i.region_code);
         allRegions
           .search(`properties.iso3166 = "${i.region_code}"`)
           .setOptions('fillColor', i.color + 'B2')
@@ -51,5 +50,5 @@ export const Map: FC = () => {
     }
   }, [map, regions]);
 
-  return <div ref={mapRef} style={{ height: 420 }} />;
+  return <div ref={mapRef} style={{ height: 700 }} />;
 };
