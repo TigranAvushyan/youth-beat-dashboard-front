@@ -83,6 +83,8 @@ export const createDashboard = () => {
     regionStore,
     fetchRegionsFx,
     fetchFeatureFx,
+    pieChart,
+    barChart,
   };
 };
 
