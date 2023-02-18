@@ -1,22 +1,23 @@
 import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { LoginPage } from './pages/auth/LoginPage';
-import React from 'react';
-import { HomePage } from './pages/home /HomePage';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-]);
+import { ConfigProvider } from 'antd';
+import { Layout } from './components/layout/Layout';
+import { Body } from './components/Body/Body';
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ConfigProvider
+    theme={{
+      token: {
+        colorPrimary: '#8C64D8',
+        colorText: '#252525',
+      },
+    }}
+    >
+      <Layout>
+        <Body />
+      </Layout>
+    </ConfigProvider>
+  );
 }
 
 export default App;
