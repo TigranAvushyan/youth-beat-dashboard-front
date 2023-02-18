@@ -1,47 +1,52 @@
-import axios from "axios"
-import { FC, ReactNode, useEffect, useState } from "react"
-import { DropDown } from "../DropDown/DropDown"
-import styles from './Map.module.css'
+import { useYMaps } from '@pbe/react-yandex-maps';
+import { FC, useEffect, useRef, useState } from 'react';
+import { useStore } from 'effector-react';
+import { mapStore } from '../../store/map/mapStore';
 
-interface Props {
-    children: ReactNode
-    options: Array<{id: string, label: string, value: string}>
-    filters: Array<{id: string, label: string, value: string}>
-}
+const getHint = (name: string, value: number) => {
+  return `<div  style="font-size: 1.4em; padding: 3px">${name}: <span>${value}</span></div>`;
+};
 
+export const Map: FC = () => {
+  const ymaps = useYMaps(['Map']);
+  const mapRef = useRef(null);
 
-export const Map: FC<Props> = ({children, options, filters}) => {
+  const regions = useStore(mapStore.$regions);
+  const [allRegions, setAllRegions] = useState<any>();
+  const [map, setMap] = useState<any>();
 
-    const [values, setValues] = useState({region: 1, filter: 1})
-
-    const getRegionStats = async () => {
-        console.log('keke')
+  useEffect(() => {
+    if (!ymaps || !mapRef.current) {
+      return;
     }
 
-    const getRegion = (id: number) => {
-        setValues((prevValues) => ({...prevValues, region: id}))
-        getRegionStats()
+    const myMap = new ymaps.Map(mapRef.current, {
+      center: [55.76, 37.64],
+      zoom: 4,
+    });
+    setMap(myMap);
+    ymaps.borders
+      .load('RU', {
+        lang: 'ru',
+        quality: 1,
+      })
+      .then(function (geojson) {
+        setAllRegions(ymaps.geoQuery(geojson));
+      });
+  }, [ymaps]);
+  useEffect(() => {
+    if (map && allRegions && regions.length) {
+      regions.forEach((i) => {
+        allRegions
+          .search(`properties.iso3166 = "${i.region_code}"`)
+          .setOptions('fillColor', i.color + 'B2')
+          .setOptions('strokeColor', i.color)
+          .setOptions('strokeWidth', 2)
+          .setProperties('hintContent', getHint(i.region_name, i.value));
+      });
+      allRegions.addToMap(map);
     }
+  }, [map, regions]);
 
-    const getFilters = (id: number) => {
-        setValues((prevValues) => ({...prevValues, filter: id}))
-        getRegionStats()
-    }
-
-
-    return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <div className={styles.filter}>
-                    {options &&
-                    <DropDown options={options} handleChange={getRegion} defaultValue='Регион' /> }
-                    {filters &&
-                    <DropDown options={filters} handleChange={getFilters} defaultValue='Признаки' /> }
-                </div>
-            </div>
-            <div className={styles.mapContainer}>
-                {children}
-            </div>
-        </div>
-    )
-}
+  return <div ref={mapRef} style={{ height: 600 }} />;
+};
