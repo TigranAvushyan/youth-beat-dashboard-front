@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react';
+import { Link } from 'react-router-dom'
 import styles from './Layout.module.css';
 import logo from '../../assets/logo.png';
 import beaver from '../../assets/beaver.png';
@@ -13,8 +14,8 @@ export const Layout: FC<Props> = ({ children }) => {
       <div className={styles.container}>
         <img className={styles.logo} src={logo} alt='logo' />
         <div>
-          <a>Отчёт</a>
-          <a>Внести изменения</a>
+          <Link to='/'>Статистика</Link>
+          <Link to='/analytics'>Аналитика</Link>
         </div>
         <div className={styles.user}>
           <p>Крутой Бобёр</p>

@@ -6,7 +6,7 @@ import { BarChartContainer } from '../BarChartContainer/BarChartContainer';
 export const Body: FC = () => {
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>Аналитика</h1>
+      <h1 className={styles.header}>Общая статистика по регионам</h1>
       <MapContainer />
       <BarChartContainer />
     </div>

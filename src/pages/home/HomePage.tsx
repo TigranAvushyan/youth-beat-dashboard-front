@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC } from 'react';
 import { Layout } from '../../components/layout/Layout';
 import { Body } from '../../components/Body/Body';
 

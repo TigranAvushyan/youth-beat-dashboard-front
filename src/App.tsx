@@ -2,12 +2,17 @@ import './App.css';
 import { ConfigProvider } from 'antd';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from './pages/home/HomePage';
+import { AnalyticsPage } from './pages/analytics/AnalyticsPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <HomePage />,
   },
+  {
+    path: '/analytics',
+    element: <AnalyticsPage />
+  }
 ]);
 
 function App() {
