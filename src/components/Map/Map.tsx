@@ -2,6 +2,8 @@ import { useYMaps } from '@pbe/react-yandex-maps';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useStore } from 'effector-react';
 import { mapStore } from '../../store/map/mapStore';
+import { dashboard } from '../../store/dataStore';
+import styles from './Map.module.css';
 
 const getHint = (name: string, value: number) => {
   return `<div  style="font-size: 1.4em; padding: 3px">${name}: <span>${value}</span></div>`;
@@ -11,7 +13,7 @@ export const Map: FC = () => {
   const ymaps = useYMaps(['Map']);
   const mapRef = useRef(null);
 
-  const regions = useStore(mapStore.$regions);
+  const regions = useStore(dashboard.mapStore.$regions);
   const [allRegions, setAllRegions] = useState<any>();
   const [map, setMap] = useState<any>();
 
@@ -37,6 +39,7 @@ export const Map: FC = () => {
   useEffect(() => {
     if (map && allRegions && regions.length) {
       regions.forEach((i) => {
+        console.log(i.region_code);
         allRegions
           .search(`properties.iso3166 = "${i.region_code}"`)
           .setOptions('fillColor', i.color + 'B2')

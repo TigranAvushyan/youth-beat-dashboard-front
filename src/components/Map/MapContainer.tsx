@@ -1,54 +1,38 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { YMaps } from '@pbe/react-yandex-maps';
 import { Map } from './Map';
-import { mapStore } from '../../store/map/mapStore';
 import { DropDown } from '../DropDown/DropDown';
 import styles from './Map.module.css';
+import { useStore } from 'effector-react';
+import { dashboard } from '../../store/dataStore';
 
-interface IProps {
-  options: { id: string; label: string; value: string }[];
-  filters: { id: string; label: string; value: string }[];
-}
-
-export const MapContainer: FC<IProps> = ({ options, filters }) => {
-  const [values, setValues] = useState({ region: 1, filter: 1 });
-
-  const getRegionStats = async () => {
-    console.log('keke');
-  };
-
-  const getRegion = (id: number) => {
-    setValues((prevValues) => ({ ...prevValues, region: id }));
-    getRegionStats();
-  };
+export const MapContainer: FC = () => {
+  const featureOptions = useStore(dashboard.featureStore.$filters);
+  const regionsOptions = useStore(dashboard.regionStore.$filters);
+  const feature = useStore(dashboard.featureStore.$selectedFilter);
+  const region = useStore(dashboard.regionStore.$selectedFilter);
 
   useEffect(() => {
-    mapStore.fetchRegionsFx(values.filter);
-  }, [values]);
-
-  const getFilters = (id: number) => {
-    setValues((prevValues) => ({ ...prevValues, filter: id }));
-    getRegionStats();
-  };
+    dashboard.fetchFeatureFx();
+    dashboard.fetchRegionsFx();
+  }, [dashboard.fetchFeatureFx, dashboard.fetchRegionsFx]);
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.filter}>
-          {options && (
-            <DropDown
-              options={options}
-              handleChange={getRegion}
-              defaultValue='Регион'
-            />
-          )}
-          {filters && (
-            <DropDown
-              options={filters}
-              handleChange={getFilters}
-              defaultValue='Признаки'
-            />
-          )}
+          <DropDown
+            options={regionsOptions}
+            onChange={dashboard.regionStore.setSelectedFilter}
+            defaultValue='Регион'
+            value={region}
+          />
+          <DropDown
+            options={featureOptions}
+            onChange={dashboard.featureStore.setSelectedFilter}
+            defaultValue='Признаки'
+            value={feature}
+          />
         </div>
       </div>
       <div className={styles.mapContainer}>
