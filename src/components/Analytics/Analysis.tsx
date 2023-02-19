@@ -44,7 +44,7 @@ export const Analysis: FC = () => {
           {array &&
             array.map((e, index) => (
               <AnalyticBlock
-                key={index}
+                key={e.text}
                 status={e.status}
                 text={e.text}
                 plot={e.plot}
