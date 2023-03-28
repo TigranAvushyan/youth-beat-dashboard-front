@@ -3,35 +3,26 @@ import { ConfigProvider } from 'antd';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from './pages/home/HomePage';
 import { AnalyticsPage } from './pages/analytics/AnalyticsPage';
-import { useEffect } from 'react';
-import { dashboard } from './store/dataStore';
+import { PrivatePage } from './pages/private/PrivatePage';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/home',
     element: <HomePage />,
   },
   {
     path: '/analytics',
     element: <AnalyticsPage />,
   },
+  {
+    path: '/',
+    element: <PrivatePage />,
+  },
 ]);
 
 function App() {
-  useEffect(() => {
-    dashboard.fetchFeatureFx();
-    dashboard.fetchRegionsFx();
-  }, [dashboard.fetchFeatureFx, dashboard.fetchRegionsFx]);
-
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#8C64D8',
-          colorText: '#252525',
-        },
-      }}
-    >
+    <ConfigProvider>
       <RouterProvider router={router} />
     </ConfigProvider>
   );
